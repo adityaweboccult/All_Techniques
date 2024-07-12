@@ -1,0 +1,72 @@
+Below are steps to create a python build
+
+sample .spec file
+if we have our main file as main.py
+Then we create main.spec file as follows
+a = Analysis(
+    ['main.py'],
+    pathex=[],
+    binaries=[],
+    datas=[('/home/nvidia/Projects/unique_person_counter_python/ultralytics','ultralytics'), ('/home/nvidia/Projects/unique_person_counter_python/models','models'),
+	('/home/nvidia/Projects/unique_person_counter_python/byte_tracker_pytorch','byte_tracker_pytorch'), ('/home/nvidia/Projects/unique_person_counter_python/insightface','insightface'),
+	('/home/nvidia/Projects/unique_person_counter_python/tracker','tracker'),
+	('/home/nvidia/archiconda3/envs/unique/lib/python3.8/site-packages/onnxruntime','onnxruntime')],
+    hiddenimports=[],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+)
+pyz = PYZ(a.pure)
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name='main',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=True,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='main',
+)
+
+
+NOTE:
+check for the main.py file inside the Analysis, 
+pass all the libraries that we want to give from our side. (That we have not installed from pip or from any other place).
+Especially for the onnx libraries , check whether inside _internal/onnxruntime/capi/
+we have the ...cuda.so/ ...tensorrt.so files that are responsible for runnning the models in gpu
+
+
+Install pyinstaller
+pip install pyinstaller
+
+then run 
+pyinstaller main.spec
+
+
+this will create two folders
+build 
+dist
+
+Inside dist we need to verify whether the model path provided, while creating the build, the models should be present at that location
+
+
+now insided dist/main we will have "main" 
+We can now run ./main and our build should be running

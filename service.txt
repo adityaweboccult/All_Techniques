@@ -1,0 +1,51 @@
+Following are the steps to create a auto startup serive in ubuntu
+requirement
+1. Know the location and the file that needs to be run
+2. know the username and the group for which we need to setup the service
+
+-----------------------------------------------------------------------------
+Below examples are the on the basis of people_counter project
+
+
+1. Creating a .service file in the required location
+sudo nano /etc/systemd/system/people_counter.service
+
+[Unit]
+Description=People counter service
+After=network.target
+
+[Service]
+ExecStart=/home/nvidia/Projects/unique_people_counter_python/main.py
+WorkingDirectory=/home/nvidia/Projects/unique_people_counter_python
+Restart=always
+User=nvidia
+Group=nvidia
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+2. Enable the service
+sudo systemctl enable people_counter.service
+
+3. Once start the service and check whether we have any erros
+sudo systemctl start people_counter.service
+
+4. Checking the status of the service
+sudo systemctl status people_counter.service
+
+
+5. Stopping the service 
+sudo systemctl stop people_counter.service
+
+6. Looking at the complete logs
+journalctl -u people_counter.service
+
+7. Disable the service
+sudo systemctl disable people_counter.service
+
+
+
+
+

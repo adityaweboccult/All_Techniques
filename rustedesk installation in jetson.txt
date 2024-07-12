@@ -1,0 +1,18 @@
+Installing the rustdesk to ubuntu device
+Offical site : https://github.com/rustdesk/rustdesk/releases/tag/1.2.6
+Download the require version
+
+In order to check the architecture of the linux 
+run : arch
+
+if we get aarch64, then we can download the matching rustdesk version
+
+cd to the location where we have the rustdesk deb installed
+
+sudo dpkg -i rustdesk-1.2.6-aarch64.deb 
+
+If we get error like cannot install rustdesk because of previous dependency not present 
+run the below commands
+sudo apt-get update
+sudo apt-get install -f
+sudo dpkg -i rustdesk-1.2.6-aarch64.deb   
